@@ -13,11 +13,54 @@ class Input extends StatelessWidget {
   final String hint;
   final TextEditingController editingController;
   final bool? obsecure;
-  final bool? enable;
+  final bool enable;
   final VoidCallback? onTapBox;
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return GestureDetector(
+      onTap: onTapBox,
+      child: TextField(
+        controller: editingController,
+        style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Color.fromARGB(255, 31, 35, 6)),
+        obscureText: obsecure ?? false,
+        decoration: InputDecoration(
+            enabled: enable,
+            hintText: hint,
+            hintStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff070623)),
+            fillColor: const Color(0xffFFFFFF),
+            filled: true,
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 14,
+              horizontal: 16
+            ),
+            isDense: true,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                width: 2,
+                color: Color(0xff4A1DFF)
+              )
+            ),
+            prefixIcon: UnconstrainedBox(
+              // alignment: const Alignment(0.4, 0),
+              child: Image.asset(
+                icon,
+                width: 24,
+                height: 24,
+              ),
+            )
+          ),
+      ),
+    );
   }
 }
