@@ -1,4 +1,5 @@
 import 'package:aps_motobike/common/info.dart';
+import 'package:aps_motobike/sources/auth_sources.dart';
 import 'package:aps_motobike/widget/button_primary.dart';
 import 'package:aps_motobike/widget/button_secondary.dart';
 import 'package:aps_motobike/widget/input.dart';
@@ -18,13 +19,20 @@ class _SignupPageState extends State<SignupPage> {
   final edtEmail = TextEditingController();
   final edtPassword = TextEditingController();
 
-
-  createNewAccount(){
-    if(edtName.text == '') return Info.error('Name must be filled');
-    if(edtEmail.text == '') return Info.error('Email must be filled');
-    if(edtPassword.text == '') return Info.error('Password must be filled');
+  createNewAccount() {
+    if (edtName.text == '') return Info.netral('Name must be filled');
+    if (edtEmail.text == '') return Info.netral('Email must be filled');
+    if (edtPassword.text == '') return Info.netral('Password must be filled');
+      
+    Info.netral('Loading');
+    AuthSource.signUp(edtName.text, edtEmail.text, edtPassword.text)
+        .then((message) {
+      Info.success('Success Sign up');
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        Navigator.pushReplacementNamed(context, '/signin');
+      });
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +67,6 @@ class _SignupPageState extends State<SignupPage> {
               icon: 'assets/ic_profile.png',
               hint: 'Write your real name',
               editingController: edtName),
-
           const Gap(20),
           const Text(
             'Email Address',
@@ -73,8 +80,6 @@ class _SignupPageState extends State<SignupPage> {
               icon: 'assets/ic_email.png',
               hint: 'Write your real email',
               editingController: edtEmail),
-                  
-
           const Gap(20),
           const Text(
             'Password',
@@ -88,12 +93,9 @@ class _SignupPageState extends State<SignupPage> {
               icon: 'assets/ic_key.png',
               hint: 'Write your password',
               editingController: edtPassword,
-              obsecure: true
-          ),
+              obsecure: true),
           const Gap(30),
           ButtonPrimary(text: 'Create New', onTap: createNewAccount),
-          
-          
           const Gap(30),
           const DottedLine(
             dashLength: 6,
@@ -101,9 +103,11 @@ class _SignupPageState extends State<SignupPage> {
             dashColor: Color(0xffCECED5),
           ),
           const Gap(30),
-
-          ButtonSecondary(text: 'Sign in', onTap: (){}),
-
+          ButtonSecondary(
+              text: 'Sign in',
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/signin');
+              }),
         ],
       ),
     );
